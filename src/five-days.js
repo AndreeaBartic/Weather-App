@@ -1,17 +1,6 @@
+import axios from 'axios';
 const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
 let apiUrl = '';
-
-async function fetchWeatherData() {
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    updateForecast(data);
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-  }
-}
 
 function updateForecast(data) {
   const forecastItems = document.getElementById('weather-forecast');
@@ -116,8 +105,8 @@ cancelButton.addEventListener('click', function () {
 async function fetchWeatherData(city) {
   apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
   try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    const response = await axios.get(apiUrl);
+    const data = response.data;
     updateForecast(data);
   } catch (error) {
     console.error('Error fetching weather data:', error);
