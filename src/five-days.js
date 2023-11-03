@@ -99,12 +99,13 @@ const cancelButton = document.querySelector('.today-btn');
 const futureForecastSection = document.querySelector('.future-forecast');
 const todayEl = document.querySelector('.dateDisplay-container');
 const moreInfo = document.querySelector('.more-btn');
-const daySection = document.querySelector('days');
+const daySection = document.querySelector('.days');
 
 fiveDaysButton.addEventListener('click', function () {
   futureForecastSection.style.display = 'block';
   futureForecastSection.style.backgroundColor = '#102136cc';
   todayEl.style.display = 'none';
+  daySection.style.display = 'flex';
   fetchWeatherData(searchBarInput.value);
 });
 

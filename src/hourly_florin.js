@@ -34,9 +34,8 @@ function getWeatherIconName(weatherCondition) {
 }
 
 const weatherIconName = getWeatherIconName(weatherCondition);
-const daySection = document.querySelector('days');
+const daySection = document.querySelector('.days');
 const moreBtn = document.querySelector('.more-btn');
-daySection.style.display = 'none';
 
 function createWeatherCard(
   time,
