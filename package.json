@@ -5,11 +5,7 @@
   "homepage": "https://AndreeaBartic.github.io/Weather-App",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /parcel-project-template/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/goitacademy/parcel-project-template.git"
+    "build": "parcel build src/*.html --public-url /Weather-App/"
   },
   "keywords": [],
   "author": "Alexander Repeta <alexander.repeta@gmail.com>",
