@@ -98,7 +98,7 @@ const buttons = document.querySelector('.buttons');
 fiveDaysButton.addEventListener('click', e => {
   e.preventDefault();
   fiveDaysButton.style.background = 'white';
-  buttons.style.marginTop = '250px';
+  buttons.style.marginTop = '30px';
   todayBtn.style.background = 'rgba(255, 255, 255, 0.5)';
   todaySection.style.display = 'none';
   futureForecastSection.style.display = 'flex';

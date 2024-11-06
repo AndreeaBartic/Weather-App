@@ -50,8 +50,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Fetch location again if location icon is clicked
     const locationIcon = document.querySelector('.search-bar_location-icon');
+
     locationIcon.addEventListener('click', e => {
       e.preventDefault();
+
       navigator.geolocation.getCurrentPosition(success, error);
     });
   };
