@@ -9,32 +9,22 @@
 .future-forecast {
   display: none;
   font-family: 'Lato', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  //background-color: #102136cc;
-  //#102136cc;
+  padding: 30px;
+  border-radius: 35px;
   transition: background-color 0.5s ease;
   margin: 20px;
-  //max-width: 100vh;
-  //max-width: 1500px;
-  gap: 15px;
   position: absolute;
-  //bottom: 20px;
-  width: 97%;
+  width: 95%;
   margin-left: 25px;
+  top: 480px;
+  flex-direction: column;
 }
 
 .weather-forecast {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-
   .all-about {
     padding: 15px;
     display: flex;
@@ -43,7 +33,11 @@
     align-items: center;
   }
 }
-
+.future-forecast__city-name {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 15px;
+}
 .day {
   text-align: center;
   display: flex;
@@ -52,7 +46,7 @@
     font-family: Lato;
     font-size: 18px;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 37px;
     letter-spacing: 0.04em;
     text-align: center;
     color: grey;
@@ -124,9 +118,8 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 769px) and (max-width: 1280px) {
   .future-forecast {
-    width: auto;
     .day {
       .day-name {
         font-family: Lato;
@@ -165,10 +158,49 @@
   }
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 768px) {
   .future-forecast {
-    width: auto;
+    margin: 0 auto;
+    position: unset;
+    padding: 30px;
+
+    .future-forecast__city-name {
+      font-size: 18px;
+    }
+    .weather-forecast {
+      scroll-snap-type: x mandatory;
+      flex-flow: row;
+      display: flex;
+      overflow-x: auto;
+    }
+    .weather-forecast::-webkit-scrollbar {
+      height: 8px; /* Setează înălțimea barei de derulare pentru scroll orizontal */
+    }
+
+    /* Stilizarea thumb-ului */
+    .weather-forecast::-webkit-scrollbar-thumb {
+      background: linear-gradient(
+        90deg,
+        #c84b16,
+        #dc7f41
+      ); /* Gradient pe thumb */
+      border-radius: 5px; /* Rotunjirea colțurilor */
+      border: 2px solid #f0f0f0; /* Margine pentru contrast */
+    }
+
+    /* Stilizarea track-ului */
+    .weather-forecast::-webkit-scrollbar-track {
+      background: #e0e0e0; /* Culoarea fundalului */
+      border-radius: 5px; /* Rotunjirea colțurilor */
+    }
+    .all-about {
+      scroll-snap-align: start;
+      align-items: center;
+      padding: 0px;
+      padding-bottom: 15px;
+    }
     .day {
+      gap: 5px;
       .day-name {
         font-family: Lato;
         font-size: 12px;
@@ -203,6 +235,9 @@
         letter-spacing: 0em;
         text-align: center;
       }
+    }
+    .more-btn {
+      font-size: 12px;
     }
   }
 }

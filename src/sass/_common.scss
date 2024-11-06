@@ -1,5 +1,24 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+html {
+  height: 100%;
+}
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  background-color: #a9abb0;
+  height: 100vh;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+@media screen and (min-width: 769px) and (max-width: 1279px) {
+  body {
+    overflow: visible;
+  }
+}
+@media screen and (max-width: 768px) {
+  body {
+    overflow: visible;
+  }
 }

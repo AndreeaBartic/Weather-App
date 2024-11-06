@@ -7,6 +7,7 @@
     animation: blur 8s infinite reverse;
 
     .quoteDisplay {
+      width: 300px;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -50,20 +51,19 @@
 @media screen and (min-width: $tablet-breakpoint) {
   .quoteDisplay__container {
     .quoteDisplay {
-      margin: 0 32px 40px 356px;
+      width: 450px;
+      background: #10213699;
+      padding: 20px;
+      border-radius: 30px;
+      margin-bottom: 30px;
 
-      .frame-quote {
-        width: 49.49px;
-        height: 45.7px;
-      }
       .quoteDisplay__text {
         font-style: italic;
         font-size: 22px;
         line-height: 26.4px;
-        margin: 0;
-        text-align: right;
-        margin-block-start: 0;
-        margin-block-end: 0;
+
+        text-align: center;
+
         width: 380px;
       }
       .quoteDisplay__author {
@@ -79,17 +79,16 @@
 
 @media screen and (min-width: $desktop-breakpoint) {
   .quoteDisplay__container {
-    margin-top: 85px;
-
     .quoteDisplay {
       max-width: 395px;
-      margin: 0 16px 0 245px;
+      margin: 0;
       gap: 8px;
-      margin-right: 16px;
 
-      .frame-quote {
-        margin: 0 109px 9.3px 0;
-      }
+      background: transparent;
+
+      // .frame-quote {
+      //   margin: 0 109px 9.3px 0;
+      // }
       .quoteDisplay__text {
         text-align: justify right;
       }

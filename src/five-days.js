@@ -1,17 +1,4 @@
-const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
-let apiUrl = '';
-
-async function fetchWeatherData() {
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    updateForecast(data);
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-  }
-}
+const apiKey = process.env.WEATHER;
 
 function updateForecast(data) {
   const forecastItems = document.getElementById('weather-forecast');
@@ -51,11 +38,15 @@ function updateForecast(data) {
     allInfo.appendChild(dayElement);
 
     const iconElement = document.createElement('img');
+
     iconElement.classList.add('w-icon');
+
     const iconCode = firstItem.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
     iconElement.src = iconUrl;
     iconElement.alt = 'weather-icon';
+
     allInfo.appendChild(iconElement);
 
     const temperatureElement = document.createElement('div');
@@ -93,20 +84,27 @@ function formatDate(date) {
   const options = { month: 'short', day: 'numeric' };
   return date.toLocaleDateString('en-US', options);
 }
-const searchBarInput = document.querySelector('.search-bar_input');
+
 const fiveDaysButton = document.querySelector('.five-days');
 const cancelButton = document.querySelector('.today-btn');
 const futureForecastSection = document.querySelector('.future-forecast');
 const todayEl = document.querySelector('.dateDisplay-container');
-const moreInfo = document.querySelector('.more-btn');
+// const moreInfo = document.querySelector('.more-btn');
 const daySection = document.querySelector('.days');
+const todayBtn = document.querySelector('.today-btn');
+const todaySection = document.querySelector('.today-weather');
+const buttons = document.querySelector('.buttons');
 
-fiveDaysButton.addEventListener('click', function () {
-  futureForecastSection.style.display = 'block';
+fiveDaysButton.addEventListener('click', e => {
+  e.preventDefault();
+  fiveDaysButton.style.background = 'white';
+  buttons.style.marginTop = '250px';
+  todayBtn.style.background = 'rgba(255, 255, 255, 0.5)';
+  todaySection.style.display = 'none';
+  futureForecastSection.style.display = 'flex';
   futureForecastSection.style.backgroundColor = '#102136cc';
   todayEl.style.display = 'none';
-  daySection.style.display = 'flex';
-  fetchWeatherData(searchBarInput.value);
+  // daySection.style.display = 'flex';
 });
 
 cancelButton.addEventListener('click', function () {
@@ -114,15 +112,25 @@ cancelButton.addEventListener('click', function () {
   todayEl.style.display = 'flex';
 });
 
-async function fetchWeatherData(city) {
-  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+export async function fetchWeatherData(city) {
+  if (!city || city.trim() === '') {
+    console.error('Error: City name is required for fetching weather data.');
+    return;
+  }
+
+  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    updateForecast(data);
+
+    document.querySelector('.future-forecast__city-name').textContent =
+      data.city.name;
+    if (data && data.list) {
+      updateForecast(data);
+    } else {
+      console.error("Error: 'list' property not found in API response", data);
+    }
   } catch (error) {
     console.error('Error fetching weather data:', error);
   }
 }
-
-searchBarInput.addEventListener('input', function () {});

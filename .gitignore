@@ -2,7 +2,7 @@
 .DS_Store
 .vscode/
 .idea/
-
+.env
 # Logs
 logs
 *.log

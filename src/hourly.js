@@ -1,4 +1,4 @@
-const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
+const apiKey = process.env.WEATHER;
 const city = 'Paris';
 
 const cardsContainer = document.querySelector('.days');

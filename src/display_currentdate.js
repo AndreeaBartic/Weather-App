@@ -1,5 +1,4 @@
 export function displayCurrentTime() {
-  const currentDate = new Date();
   const dayDisplay = document.getElementById('dayDisplay');
   const monthDisplay = document.getElementById('monthDisplay');
   const timeDisplay = document.getElementById('timeDisplay');
@@ -22,21 +21,28 @@ export function displayCurrentTime() {
     'December',
   ];
 
-  const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  const month = months[currentDate.getMonth()];
-  const day = currentDate.getDate();
-  const hours = currentDate.getHours();
-  const minutes = currentDate.getMinutes();
-  const seconds = currentDate.getSeconds();
+  function updateTimeAndDate() {
+    const currentDate = new Date();
 
-  const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
-    .toString()
-    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  const ordinalIndicator = getOrdinalIndicator(day);
+    const dayOfWeek = daysOfWeek[currentDate.getDay()];
+    const month = months[currentDate.getMonth()];
+    const day = currentDate.getDate();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    const ordinalIndicator = getOrdinalIndicator(day);
+    dayDisplay.textContent = `${day}${ordinalIndicator} ${dayOfWeek}`;
+    monthDisplay.textContent = `${month}`;
+    timeDisplay.textContent = formattedTime;
+  }
+
   function getOrdinalIndicator(day) {
-    if (day >= 11 && day <= 13) {
-      return 'th';
-    }
+    if (day >= 11 && day <= 13) return 'th';
     switch (day % 10) {
       case 1:
         return 'st';
@@ -48,10 +54,9 @@ export function displayCurrentTime() {
         return 'th';
     }
   }
-  dayDisplay.textContent = `${day}${ordinalIndicator} ${dayOfWeek}`;
-  monthDisplay.textContent = `${month}`;
-  timeDisplay.textContent = formattedTime;
 
+  // Initial call to set sunrise/sunset time and current date
+  updateTimeAndDate();
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
@@ -62,12 +67,6 @@ export function displayCurrentTime() {
       )
         .then(response => response.json())
         .then(data => {
-          const DayContent = `
-          <h3>${day}<sup class="exponent">${getOrdinalIndicator(
-            day
-          )}</sup> ${dayOfWeek}</h3>
-        `;
-          dayDisplay.innerHTML = DayContent;
           const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString(
             [],
             { hour: '2-digit', minute: '2-digit', hour12: false }
@@ -77,12 +76,18 @@ export function displayCurrentTime() {
             { hour: '2-digit', minute: '2-digit', hour12: false }
           );
 
-          sunriseDisplay.textContent = `${sunrise}`;
-          sunsetDisplay.textContent = `${sunset}`;
+          sunriseDisplay.textContent = sunrise;
+          sunsetDisplay.textContent = sunset;
         })
         .catch(error =>
           console.error('Error fetching data from OpenWeatherMap:', error)
         );
     });
   }
+
+  // Update time every second
+  setInterval(updateTimeAndDate, 1000);
 }
+
+// Call the function initially to set the date, time, and weather data
+displayCurrentTime();

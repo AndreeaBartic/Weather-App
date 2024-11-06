@@ -4,10 +4,10 @@ import { todayWeather } from './today.js';
 import { displayCurrentTime } from './display_currentdate.js';
 import { updateTimeForCity } from './display_citydate.js';
 import { updateTimeWithTimeZone } from './display_citydate.js';
+import { fetchWeatherData } from './five-days.js';
 
-const Key = '07aed853a2b3116bf7e19dfeee63b968';
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function (e) {
+  e.preventDefault();
   const form = document.querySelector('.search-bar');
   const searchBarInput = document.querySelector('.search-bar_input');
   const starIcon = document.querySelector('.search-bar_favorites-icon');
@@ -15,16 +15,59 @@ document.addEventListener('DOMContentLoaded', function () {
   const favoritesLeftIcon = document.querySelector('.favorites_prev-btn');
   const favoritesRightIcon = document.querySelector('.favorites_next-btn');
 
+  const findCityLocation = () => {
+    const success = position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${process.env.WEATHER}`;
+
+      fetch(geoApiUrl)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          if (data && data.length > 0) {
+            const cityName = data[0].name;
+
+            // Fetch current weather, background image, and five-day forecast
+            fetchWeather(cityName);
+            todayWeather(cityName);
+            fetchWeatherData(cityName); // Fetch and display the five-day forecast
+          } else {
+            console.error('City not found.');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching city name:', error);
+        });
+    };
+
+    const error = () => {
+      console.error('Could not get location.');
+    };
+
+    // Automatically fetch location on page load
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    // Fetch location again if location icon is clicked
+    const locationIcon = document.querySelector('.search-bar_location-icon');
+    locationIcon.addEventListener('click', e => {
+      e.preventDefault();
+      navigator.geolocation.getCurrentPosition(success, error);
+    });
+  };
+
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     const cityName = searchBarInput.value.trim();
     if (cityName) {
       fetchWeather(cityName);
       todayWeather(cityName);
+      fetchWeatherData(cityName);
     }
   });
 
-  starIcon.addEventListener('click', function () {
+  starIcon.addEventListener('click', function (e) {
+    e.preventDefault();
     const cityName = searchBarInput.value.trim();
     this.classList.toggle('selected');
     if (cityName && !isCityInFavorites(cityName)) {
@@ -33,7 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   const SCROLL_AMOUNT = 100;
-  favoritesLeftIcon.addEventListener('click', function () {
+  favoritesLeftIcon.addEventListener('click', function (e) {
+    e.preventDefault();
     favoritesList.scrollBy({
       left: -SCROLL_AMOUNT,
       top: 0,
@@ -41,7 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  favoritesRightIcon.addEventListener('click', function () {
+  favoritesRightIcon.addEventListener('click', function (e) {
+    e.preventDefault();
     favoritesList.scrollBy({
       left: SCROLL_AMOUNT,
       top: 0,
@@ -50,8 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   displayCurrentTime();
+  findCityLocation();
+
   function fetchWeather(cityName) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${Key}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${process.env.WEATHER}`;
     axios
       .get(url)
       .then(response => {
@@ -59,15 +106,19 @@ document.addEventListener('DOMContentLoaded', function () {
         if (data.cod === 200) {
           fetchCityImage(cityName)
             .then(imageUrl => {
-              document.body.style.backgroundImage = `url(${imageUrl})`;
-              document.body.style.backgroundSize = 'cover';
-              document.body.style.backgroundPosition = 'center';
-              document.body.style.backgroundRepeat = 'no-repeat';
+              const img = new Image();
+              img.src = imageUrl;
+
+              img.onload = e => {
+                e.preventDefault();
+                document.body.style.backgroundImage = `url(${imageUrl})`;
+              };
 
               const timezoneOffset = data.timezone / 3600;
-              document.body.style.height = '954px';
+
               updateTimeForCity(cityName);
               updateTimeWithTimeZone(timezoneOffset);
+              // fetchWeatherData(cityName);
             })
             .catch(error => {
               console.error('Error fetching city image:', error);
@@ -106,38 +157,4 @@ document.addEventListener('DOMContentLoaded', function () {
     listItem.appendChild(closeButton);
     favoritesList.appendChild(listItem);
   }
-
-  const findCityLocation = () => {
-    const success = position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${Key}`;
-
-      fetch(geoApiUrl)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.length > 0) {
-            const cityName = data[0].name;
-
-            fetchWeather(cityName);
-            todayWeather(cityName);
-          } else {
-            console.error('City not found.');
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching city name:', error);
-        });
-    };
-
-    const error = () => {
-      console.error('Could not get location.');
-    };
-    navigator.geolocation.getCurrentPosition(success, error);
-    const locationIcon = document.querySelector('.search-bar_location-icon');
-    locationIcon.addEventListener('click', () => {
-      navigator.geolocation.getCurrentPosition(success, error);
-    });
-  };
-  findCityLocation();
 });

@@ -48,7 +48,7 @@ export function updateTimeWithTimeZone(timezoneOffset) {
   const timeDifference = timezoneOffset + localTimeToGMT;
 
   let hours = currentTime.getHours() + timeDifference;
-  hours = (hours + 24) % 24; // Ensure hours are between 0 and 23
+  hours = (hours + 24) % 24;
 
   const formattedHour = String(hours).padStart(2, '0');
   const formattedMin = String(currentTime.getMinutes()).padStart(2, '0');
