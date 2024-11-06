@@ -21,7 +21,7 @@ export function fetchCityImage(cityName) {
         return image.hits[randomImg].largeImageURL; // Use webformatURL for faster loading
       } else {
         console.warn('No images found for this city, using a fallback image.');
-        return backgroundImage; // Return a fallback image URL
+        return backgroundImage;
       }
     });
 }
