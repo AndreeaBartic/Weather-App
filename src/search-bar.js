@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     const success = position => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${process.env.WEATHER}`;
+      const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${'07aed853a2b3116bf7e19dfeee63b968'}`;
 
       fetch(geoApiUrl)
         .then(res => res.json())
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
   findCityLocation();
 
   function fetchWeather(cityName) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${process.env.WEATHER}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${'07aed853a2b3116bf7e19dfeee63b968'}`;
     axios
       .get(url)
       .then(response => {
