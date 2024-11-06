@@ -1,3 +1,10 @@
+input,
+button {
+  -webkit-appearance: none; /* Înlătură stilul implicit iOS */
+  appearance: none;
+  border: none;
+  background: none;
+}
 .search-bar {
   margin: 50px auto 15px;
   max-width: 822px;
@@ -7,7 +14,6 @@
 }
 .search-bar_location-icon {
   position: absolute;
-
   top: 13px;
   left: 30px;
   cursor: pointer;
@@ -37,7 +43,7 @@
 .search-bar_favorites-icon {
   position: absolute;
   top: 13px;
-  right: 50px;
+  right: 45px;
   cursor: pointer;
 }
 .favorites {
