@@ -7,8 +7,7 @@
 }
 .search-bar_location-icon {
   position: absolute;
-  display: flex;
-  align-items: center;
+
   top: 13px;
   left: 30px;
   cursor: pointer;
@@ -37,9 +36,8 @@
 }
 .search-bar_favorites-icon {
   position: absolute;
-  display: flex;
   top: 13px;
-  right: 30px;
+  right: 50px;
   cursor: pointer;
 }
 .favorites {
