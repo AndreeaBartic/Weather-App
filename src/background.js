@@ -6,7 +6,9 @@ export function fetchCityImage(cityName) {
     cityName
   )}&page=1&per_page=40`;
 
-  return fetch(URL + requestParameters + '&' + process.env.BACKGROUND)
+  return fetch(
+    URL + requestParameters + '&' + 'key=40060920-6840b24aaee2d2997514145f9'
+  )
     .then(res => {
       if (!res.ok) {
         throw new Error('Network response was not ok');
