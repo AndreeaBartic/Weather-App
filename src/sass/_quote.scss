@@ -1,20 +1,22 @@
 /*Mobile*/
-@media screen and (min-width: $mobile-breakpoint) {
+@media screen and (min-width: 150px) {
   .quoteDisplay__container {
     display: flex;
     flex-direction: column;
     margin-top: 32px;
     animation: blur 8s infinite reverse;
+    width: 80%;
 
     .quoteDisplay {
-      width: 300px;
+      background-color: rgba(16, 33, 54, 0.344);
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       color: $text-color;
       font-family: $font;
       font-weight: 400;
-      margin: 0 20px;
+      margin: 0 auto;
       animation: glow 2500ms linear infinite 2000ms;
 
       @keyframes glow {
@@ -51,7 +53,8 @@
 @media screen and (min-width: $tablet-breakpoint) {
   .quoteDisplay__container {
     .quoteDisplay {
-      width: 450px;
+      margin: 0 auto;
+      width: 80%;
       background: #10213699;
       padding: 20px;
       border-radius: 30px;
@@ -64,7 +67,8 @@
 
         text-align: center;
 
-        width: 380px;
+        width: 100%;
+        height: 150px;
       }
       .quoteDisplay__author {
         font-size: 18px;
@@ -79,18 +83,21 @@
 
 @media screen and (min-width: $desktop-breakpoint) {
   .quoteDisplay__container {
+    width: 495px;
+    align-items: flex-end;
     .quoteDisplay {
-      max-width: 395px;
-      margin: 0;
+      max-width: 95%;
+      background: none;
       gap: 8px;
+      margin: 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      flex-direction: column;
 
-      background: transparent;
-
-      // .frame-quote {
-      //   margin: 0 109px 9.3px 0;
-      // }
       .quoteDisplay__text {
-        text-align: justify right;
+        text-align: right;
       }
       .quoteDisplay__author {
         margin-top: 32px;
