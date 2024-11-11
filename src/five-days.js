@@ -61,6 +61,14 @@ function updateForecast(data) {
     const moreButton = document.createElement('button');
     moreButton.classList.add('more-btn');
     moreButton.innerHTML = 'more info';
+
+    moreButton.addEventListener('click', function (e) {
+      e.preventDefault();
+      const hour = document.querySelector('.days');
+      hour.style.display = 'flex';
+      buttons.style.marginTop = '30px';
+      futureForecastSection.style.position = 'unset';
+    });
     allInfo.appendChild(moreButton);
     forecastItems.appendChild(allInfo);
   }
@@ -98,7 +106,8 @@ const buttons = document.querySelector('.buttons');
 fiveDaysButton.addEventListener('click', e => {
   e.preventDefault();
   fiveDaysButton.style.background = 'white';
-  buttons.style.marginTop = '30px';
+  buttons.style.marginTop = '250px';
+  buttons.style.marginRight = '50px';
   todayBtn.style.background = 'rgba(255, 255, 255, 0.5)';
   todaySection.style.display = 'none';
   futureForecastSection.style.display = 'flex';

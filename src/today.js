@@ -5,6 +5,7 @@ const API_URL_BASE =
 
 const todayBtn = document.querySelector('.today-btn');
 const fiveDaysBtn = document.querySelector('.five-days');
+
 export async function todayWeather(cityName) {
   try {
     const response = await fetch(`${API_URL_BASE}${cityName}&appid=${API_KEY}`);
@@ -42,6 +43,8 @@ export async function todayWeather(cityName) {
 todayBtn.addEventListener('click', e => {
   e.preventDefault();
   document.querySelector('.buttons').style.marginTop = '10px';
+  document.querySelector('.buttons').style.marginRight = '0';
+  document.querySelector('.days').style.display = 'none';
   todayBtn.style.background = 'white';
   fiveDaysBtn.style.background = 'rgba(255, 255, 255, 0.5)';
   document.querySelector('.today-weather').style.display = 'flex';

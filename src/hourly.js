@@ -1,22 +1,16 @@
 const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
-const city = 'Paris';
+
+import axios from 'axios';
 
 const cardsContainer = document.querySelector('.days');
-const svgContainer = document.getElementById('svg-container');
-const weatherCondition = 'Clouds';
+if (!cardsContainer) {
+  console.error('Elementul .days nu a fost găsit în DOM.');
+}
 
-const icons = {
-  Clouds: svgContainer.querySelector('#icon-cloudy'),
-  Clear: svgContainer.querySelector('#icon-sun'),
-  Snow: svgContainer.querySelector('#icon-snow'),
-  Clouds_sun: svgContainer.querySelector('#icon-clouds-and-sun'),
-  Weather: svgContainer.querySelector('#icon-weather'),
-  sunrise: svgContainer.querySelector('#icon-sunrise'),
-  sunset: svgContainer.querySelector('#icon-sunset'),
-  humidity: svgContainer.querySelector('#icon-humidity'),
-  barometer: svgContainer.querySelector('#icon-barometer'),
-  wind: svgContainer.querySelector('#icon-wind'),
-};
+const svgContainer = document.getElementById('svg-container');
+if (!svgContainer) {
+  console.error('Elementul #svg-container nu a fost găsit în DOM.');
+}
 
 function getWeatherIconName(weatherCondition) {
   switch (weatherCondition) {
@@ -33,17 +27,23 @@ function getWeatherIconName(weatherCondition) {
   }
 }
 
-const weatherIconName = getWeatherIconName(weatherCondition);
-const daySection = document.querySelector('.days');
-const moreBtn = document.querySelector('.more-btn');
-
 function createWeatherCard(
   time,
   temperature,
   pressureInMmHg,
   humidity,
-  windSpeed
+  windSpeed,
+  weatherCondition
 ) {
+  const weatherIconName = getWeatherIconName(weatherCondition);
+  if (!weatherIconName) {
+    console.error(
+      'Icona meteo nu a fost găsită pentru condiția:',
+      weatherCondition
+    );
+    return null;
+  }
+
   const card = document.createElement('div');
   card.classList.add('weather-card');
   card.innerHTML = `
@@ -82,22 +82,26 @@ function convertPressureToMmHg(pressureInhPa) {
   return (pressureInhPa * 0.75006375541921).toFixed(2);
 }
 
-fetch(
-  `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
-)
-  .then(response => response.json())
-  .then(hourlyData => {
-    const next7HoursData = hourlyData.list.slice(0, 7);
+export async function fetchHourWeather(cityName) {
+  if (!cityName) {
+    console.error('Numele orașului nu este definit.');
+    return;
+  }
 
+  try {
+    const hourlyData = await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`
+    );
+
+    const next7HoursData = hourlyData.data.list.slice(0, 7);
+    cardsContainer.innerHTML = '';
     next7HoursData.forEach(hourData => {
       const date = new Date(hourData.dt * 1000);
       const hour = date.getHours();
       const minutes = date.getMinutes();
-
       const hourTime = `${hour.toString().padStart(2, '0')}:${minutes
         .toString()
         .padStart(2, '0')}`;
-
       const hourTemperature = `${Math.round(hourData.main.temp)}°C`;
       const hourPressureInMmHg = `${convertPressureToMmHg(
         hourData.main.pressure
@@ -105,16 +109,23 @@ fetch(
       const hourHumidity = `${hourData.main.humidity} %`;
       const hourWindSpeed = `${hourData.wind.speed} m/s`;
 
+      const weatherCondition = hourData.weather[0].main;
+
       const hourCard = createWeatherCard(
         hourTime,
         hourTemperature,
         hourPressureInMmHg,
         hourHumidity,
-        hourWindSpeed
+        hourWindSpeed,
+        weatherCondition
       );
-      cardsContainer.appendChild(hourCard);
+
+      if (hourCard) {
+        cardsContainer.appendChild(hourCard);
+      }
     });
-  })
-  .catch(error => {
-    console.error('Eroare la obținerea datelor pentru orele următoare:', error);
-  });
+  } catch (error) {
+    console.error('Eroare la obținerea datelor meteo:', error);
+    alert('Eroare la obținerea datelor meteo:', error);
+  }
+}

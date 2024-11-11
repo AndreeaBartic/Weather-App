@@ -5,6 +5,7 @@ import { displayCurrentTime } from './display_currentdate.js';
 import { updateTimeForCity } from './display_citydate.js';
 import { updateTimeWithTimeZone } from './display_citydate.js';
 import { fetchWeatherData } from './five-days.js';
+import { fetchHourWeather } from './hourly.js';
 
 document.addEventListener('DOMContentLoaded', function (e) {
   e.preventDefault();
@@ -31,7 +32,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Fetch current weather, background image, and five-day forecast
             fetchWeather(cityName);
             todayWeather(cityName);
-            fetchWeatherData(cityName); // Fetch and display the five-day forecast
+            fetchWeatherData(cityName);
+            fetchHourWeather(cityName);
+            // Fetch and display the five-day forecast
           } else {
             console.error('City not found.');
           }
@@ -65,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       fetchWeather(cityName);
       todayWeather(cityName);
       fetchWeatherData(cityName);
+      fetchHourWeather(cityName);
     }
   });
 
@@ -120,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
               updateTimeForCity(cityName);
               updateTimeWithTimeZone(timezoneOffset);
+
               // fetchWeatherData(cityName);
             })
             .catch(error => {
