@@ -1,7 +1,7 @@
 const API_KEY = '07aed853a2b3116bf7e19dfeee63b968';
 
 const API_URL_BASE =
-  'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+  'https://api.openweathermap.org/data/2.5/forecast?units=metric&q=';
 
 const todayBtn = document.querySelector('.today-btn');
 const fiveDaysBtn = document.querySelector('.five-days');
@@ -14,13 +14,26 @@ export async function todayWeather(cityName) {
     }
     const data = await response.json();
 
-    document.querySelector('.hero-weather__city').textContent = data.name;
+    // Filtrăm datele pentru a obține temperaturile din ziua curentă
+    const today = new Date().toDateString();
+    const todayTemps = data.list.filter(item => {
+      const itemDate = new Date(item.dt * 1000).toDateString();
+      return itemDate === today;
+    });
+
+    // Calculăm min și max pentru temperaturile din ziua curentă
+    const minTemp = Math.round(
+      Math.min(...todayTemps.map(item => item.main.temp_min))
+    );
+    const maxTemp = Math.round(
+      Math.max(...todayTemps.map(item => item.main.temp_max))
+    );
+
+    document.querySelector('.hero-weather__city').textContent = data.city.name;
     document.querySelector('.hero-weather__degrees').textContent =
-      Math.round(data.main.temp) + '°';
-    document.querySelector('.values__min h5').textContent =
-      Math.round(data.main.temp_min) + '°';
-    document.querySelector('.values__max h5').textContent =
-      Math.round(data.main.temp_max) + '°';
+      Math.round(data.list[0].main.temp) + '°';
+    document.querySelector('.values__min h5').textContent = minTemp + '°';
+    document.querySelector('.values__max h5').textContent = maxTemp + '°';
 
     const heroWeatherIcon = document.querySelector('.hero-weather');
     const existingIcon = document.querySelector('.hero-weather__emoji');
@@ -29,11 +42,14 @@ export async function todayWeather(cityName) {
     }
     let iconToday = document.createElement('img');
     iconToday.classList.add('hero-weather__emoji');
-    const iconApi = data.weather[0].icon;
+    const iconApi = data.list[0].weather[0].icon;
     const iconLink = `https://openweathermap.org/img/wn/${iconApi}@2x.png`;
     iconToday.src = iconLink;
-    iconToday.alt = data.weather[0].description;
+    iconToday.alt = data.list[0].weather[0].description;
     heroWeatherIcon.prepend(iconToday);
+
+    // Log pentru verificarea temperaturilor de azi
+    console.log(todayTemps); // Vezi toate intervalele de temperatură de azi
   } catch (error) {
     console.error('There was an error fetching the weather data:', error);
   }
