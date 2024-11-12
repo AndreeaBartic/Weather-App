@@ -57,9 +57,15 @@ export async function todayWeather(cityName) {
 
 // Event listeners for buttons
 todayBtn.addEventListener('click', e => {
+  // if (window.innerWidth > 1280) {
+
+  // } else {
+  //      document.querySelector('.buttons').style.marginRight = '0';
+  // }
+
   e.preventDefault();
-  document.querySelector('.buttons').style.marginTop = '10px';
   document.querySelector('.buttons').style.marginRight = '0';
+  document.querySelector('.buttons').style.marginTop = '10px';
   document.querySelector('.days').style.display = 'none';
   todayBtn.style.background = 'white';
   fiveDaysBtn.style.background = 'rgba(255, 255, 255, 0.5)';

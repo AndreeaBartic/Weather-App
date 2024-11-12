@@ -16,7 +16,7 @@
       color: $text-color;
       font-family: $font;
       font-weight: 400;
-      margin: 0 auto;
+      margin: 0 auto 30px;
       animation: glow 2500ms linear infinite 2000ms;
 
       @keyframes glow {

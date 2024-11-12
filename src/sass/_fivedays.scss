@@ -13,7 +13,7 @@
   border-radius: 35px;
   transition: background-color 0.5s ease;
   margin: 20px;
-  width: 95%;
+  width: 90%;
   flex-direction: column;
   margin: 0 auto;
 }
@@ -165,6 +165,7 @@
     .future-forecast__city-name {
       font-size: 18px;
     }
+
     .weather-forecast {
       scroll-snap-type: x mandatory;
       flex-flow: row;
