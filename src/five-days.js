@@ -76,7 +76,7 @@ function updateForecast(data) {
       e.preventDefault();
       const hour = document.querySelector('.days');
       hour.style.display = 'flex';
-      buttons.style.marginTop = '30px';
+      buttons.style.marginTop = '0';
       futureForecastSection.style.position = 'unset';
     });
     allInfo.appendChild(moreButton);
