@@ -121,7 +121,7 @@ fiveDaysButton.addEventListener('click', e => {
     buttons.style.marginTop = '220px';
   } else {
     buttons.style.marginRight = '0';
-    buttons.style.marginTop = '180px';
+    buttons.style.marginTop = '120px';
   }
   fiveDaysButton.style.background = 'white';
 
