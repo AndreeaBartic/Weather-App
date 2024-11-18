@@ -1,9 +1,9 @@
 const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
 
 import axios from 'axios';
-import barometerIcon from './images/005-barometer.svg';
-import windIcon from './images/003-wind.svg';
-import humidityIcon from './images/004-humidity.svg';
+import barometerIcon from './images/svg/005-barometer.svg';
+import windIcon from './images/svg/003-wind.svg';
+import humidityIcon from './images/svg/004-humidity.svg';
 
 const cardsContainer = document.querySelector('.days');
 if (!cardsContainer) {
@@ -102,45 +102,8 @@ export async function fetchHourWeather(cityName) {
 }
 
 // Display hourly weather for a specific day
-export function displayDailyWeather(data) {
-  const forecastContainer = document.getElementById('weather-forecast');
-  forecastContainer.innerHTML = ''; // Clear previous daily cards
-
-  const groupedByDay = data.list.reduce((days, item) => {
-    const date = new Date(item.dt * 1000).toDateString();
-    if (!days[date]) days[date] = [];
-    days[date].push(item);
-    return days;
-  }, {});
-
-  Object.entries(groupedByDay).forEach(([day, hourlyData]) => {
-    const minTemp = Math.min(...hourlyData.map(d => d.main.temp_min));
-    const maxTemp = Math.max(...hourlyData.map(d => d.main.temp_max));
-    const dayIconCode = hourlyData[0].weather[0].icon;
-    const dayIconUrl = `http://openweathermap.org/img/wn/${dayIconCode}@2x.png`;
-
-    const dayCard = document.createElement('div');
-    dayCard.classList.add('daily-card');
-    dayCard.innerHTML = `
-      <h3>${day}</h3>
-      <img src="${dayIconUrl}" alt="Daily weather icon" class="daily-weather-icon">
-      <p>Min: ${Math.round(minTemp)}°C</p>
-      <p>Max: ${Math.round(maxTemp)}°C</p>
-      <button class="more-info-btn">More Info</button>
-    `;
-
-    const moreInfoButton = dayCard.querySelector('.more-info-btn');
-    moreInfoButton.addEventListener('click', () => {
-      // Afisăm datele orare pentru acea zi
-      displayHourlyWeather(hourlyData);
-    });
-
-    forecastContainer.appendChild(dayCard);
-  });
-}
-
 export function displayHourlyWeather(hourlyData) {
-  cardsContainer.innerHTML = ''; // Clear previous cards
+  cardsContainer.innerHTML = ''; // Clear the container
 
   hourlyData.forEach(hourData => {
     const processedData = processHourlyData(hourData);
@@ -154,65 +117,4 @@ export function displayHourlyWeather(hourlyData) {
   cardsContainer.style.display = 'flex'; // Ensure the container is visible
 }
 
-function processHourlyData(hourData) {
-  const date = new Date(hourData.dt * 1000);
-  const hour = date.getHours();
-  const minutes = date.getMinutes();
-  const hourTime = `${hour.toString().padStart(2, '0')}:${minutes
-    .toString()
-    .padStart(2, '0')}`;
-  const hourTemperature = `${Math.round(hourData.main.temp)}°C`;
-  const hourPressureInMmHg = `${convertPressureToMmHg(
-    hourData.main.pressure
-  )} mm`;
-  const hourHumidity = `${hourData.main.humidity} %`;
-  const hourWindSpeed = `${hourData.wind.speed} m/s`;
-  const weatherCondition = hourData.weather[0].main;
-  const weatherIconCode = hourData.weather[0].icon;
-  const weatherIconUrl = `http://openweathermap.org/img/wn/${weatherIconCode}@2x.png`;
-
-  return {
-    hourTime,
-    hourTemperature,
-    hourPressureInMmHg,
-    hourHumidity,
-    hourWindSpeed,
-    weatherCondition,
-    weatherIconUrl,
-  };
-}
-
-function createWeatherCard({
-  hourTime,
-  hourTemperature,
-  hourPressureInMmHg,
-  hourHumidity,
-  hourWindSpeed,
-  weatherIconUrl,
-  weatherCondition,
-}) {
-  const card = document.createElement('div');
-  card.classList.add('weather-card');
-  card.innerHTML = `
-    <div class="weather-card__time">
-      <h2 class="weather-card__time-hour">${hourTime}</h2>
-      <img src="${weatherIconUrl}" alt="${weatherCondition}" class="weather-card__time-icon" />
-      <h1 class="weather-card__time-temp">${hourTemperature}</h1>
-    </div>
-    <div class="weather-card__details">
-      <div class="weather-card__barometer">
-        <img class="weather-card__icon" src=${barometerIcon} alt="barometer"/> 
-        <p class="weather-card__details-text">${hourPressureInMmHg}</p>
-      </div>
-      <div class="weather-card__humidity">
-        <img class="weather-card__icon" src=${humidityIcon} alt="humidity"/>
-        <p class="weather-card__details-text">${hourHumidity}</p>
-      </div>
-      <div class="weather-card__wind">
-        <img class="weather-card__icon" src=${windIcon} alt="wind"/>
-        <p class="weather-card__details-text">${hourWindSpeed}</p>
-      </div>
-    </div>
-  `;
-  return card;
-}
+// Display daily weather with a button for more info
