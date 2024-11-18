@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
       fetch(geoApiUrl)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           if (data && data.length > 0) {
             const cityName = data[0].name;
 

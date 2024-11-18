@@ -28,7 +28,7 @@ function processHourlyData(hourData) {
     humidity: `${hourData.main.humidity} %`,
     windSpeed: `${hourData.wind.speed} m/s`,
     weatherCondition: hourData.weather[0].main,
-    iconUrl: `http://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`,
+    iconUrl: `https://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`,
   };
 }
 
