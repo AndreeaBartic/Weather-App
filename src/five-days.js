@@ -1,3 +1,5 @@
+import { displayHourlyWeather } from './hourly';
+
 const apiKey = '07aed853a2b3116bf7e19dfeee63b968';
 
 function updateForecast(data) {
@@ -9,24 +11,18 @@ function updateForecast(data) {
 
   const dayMap = {};
 
-  // Grupăm datele pe zile, excluzând ziua curentă
+  // Group data by day, excluding the current day
   data.list.forEach(item => {
     const date = new Date(item.dt * 1000);
     const day = date.toDateString();
 
-    if (date >= tomorrow) {
-      if (!dayMap[day]) {
-        dayMap[day] = [];
-      }
-      dayMap[day].push(item);
+    if (!dayMap[day]) {
+      dayMap[day] = [];
     }
+    dayMap[day].push(item);
   });
 
-  // Log pentru a verifica datele și zilele disponibile
-  console.log(dayMap);
-
-  // Selectăm până la 5 zile distincte
-  const days = Object.keys(dayMap).slice(0, 5);
+  const days = Object.keys(dayMap).slice(0, 5); // Limit to 5 days
 
   days.forEach(day => {
     const forecastItem = document.createElement('div');
@@ -68,16 +64,13 @@ function updateForecast(data) {
                 <div class="temperature__data"> ${maxTemp}&deg;C</div></div>`;
     allInfo.appendChild(temperatureElement);
 
-    // Adaugă butonul "more info"
+    // Add "more info" button
     const moreButton = document.createElement('button');
     moreButton.classList.add('more-btn');
-    moreButton.innerHTML = 'more info';
+    moreButton.innerHTML = 'More Info';
     moreButton.addEventListener('click', function (e) {
       e.preventDefault();
-      const hour = document.querySelector('.days');
-      hour.style.display = 'flex';
-      buttons.style.marginTop = '0';
-      futureForecastSection.style.position = 'unset';
+      displayHourlyWeather(dayMap[day]); // Pass hourly data for this day
     });
     allInfo.appendChild(moreButton);
 

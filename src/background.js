@@ -1,27 +1,26 @@
+import axios from 'axios';
 import backgroundImage from './images/background.png';
 
-export function fetchCityImage(cityName) {
+export async function fetchCityImage(cityName) {
   const URL = 'https://pixabay.com/api/';
   const requestParameters = `?image_type=photo&category=travel&orientation=horizontal&q=${encodeURIComponent(
     cityName
-  )}&page=1&per_page=40`;
+  )}&page=1&per_page=40&key=40060920-6840b24aaee2d2997514145f9`;
 
-  return fetch(
-    URL + requestParameters + '&' + 'key=40060920-6840b24aaee2d2997514145f9'
-  )
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return res.json();
-    })
-    .then(image => {
-      if (image.hits && image.hits.length) {
-        const randomImg = Math.floor(Math.random() * image.hits.length);
-        return image.hits[randomImg].largeImageURL; // Use webformatURL for faster loading
-      } else {
-        console.warn('No images found for this city, using a fallback image.');
-        return backgroundImage;
-      }
-    });
+  try {
+    const response = await axios.get(URL + requestParameters);
+    const data = response.data;
+
+    if (data.hits && data.hits.length) {
+      const randomImgIndex = Math.floor(Math.random() * data.hits.length);
+      return data.hits[randomImgIndex].largeImageURL;
+    } else {
+      console.warn('No images found for this city, using a fallback image.');
+      alert('No images found for this city, using a fallback image.');
+      return backgroundImage;
+    }
+  } catch (error) {
+    console.error('Error fetching city image:', error);
+    return backgroundImage; // Fallback image in case of error
+  }
 }
