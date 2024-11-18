@@ -12,7 +12,7 @@ if (!cardsContainer) {
 
 // Convert pressure from hPa to mmHg
 function convertPressureToMmHg(pressureInhPa) {
-  return (pressureInhPa * 0.75006375541921).toFixed(2);
+  return Math.round(pressureInhPa * 0.75006375541921); // Rotunjire la cel mai apropiat întreg
 }
 
 // Process a single hour of weather data
