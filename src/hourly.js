@@ -7,15 +7,13 @@ import humidityIcon from './images/svg/004-humidity.svg';
 
 const cardsContainer = document.querySelector('.days');
 if (!cardsContainer) {
-  console.error('Elementul .days nu a fost găsit în DOM.');
+  console.error(error);
 }
 
-// Convert pressure from hPa to mmHg
 function convertPressureToMmHg(pressureInhPa) {
-  return Math.round(pressureInhPa * 0.75006375541921); // Rotunjire la cel mai apropiat întreg
+  return Math.round(pressureInhPa * 0.75006375541921);
 }
 
-// Process a single hour of weather data
 function processHourlyData(hourData) {
   const date = new Date(hourData.dt * 1000);
   const hour = date.getHours();
@@ -34,7 +32,6 @@ function processHourlyData(hourData) {
   };
 }
 
-// Create a weather card for hourly data
 function createWeatherCard(hourData) {
   const {
     time,
@@ -72,7 +69,6 @@ function createWeatherCard(hourData) {
   return card;
 }
 
-// Fetch hourly weather for the selected city
 export async function fetchHourWeather(cityName) {
   if (!cityName) {
     console.error('Numele orașului nu este definit.');
@@ -85,7 +81,7 @@ export async function fetchHourWeather(cityName) {
     );
 
     const next7HoursData = response.data.list.slice(0, 7);
-    cardsContainer.innerHTML = ''; // Clear previous cards
+    cardsContainer.innerHTML = '';
 
     next7HoursData.forEach(hourData => {
       const processedData = processHourlyData(hourData);
@@ -101,9 +97,8 @@ export async function fetchHourWeather(cityName) {
   }
 }
 
-// Display hourly weather for a specific day
 export function displayHourlyWeather(hourlyData) {
-  cardsContainer.innerHTML = ''; // Clear the container
+  cardsContainer.innerHTML = '';
 
   hourlyData.forEach(hourData => {
     const processedData = processHourlyData(hourData);
@@ -114,7 +109,5 @@ export function displayHourlyWeather(hourlyData) {
     }
   });
 
-  cardsContainer.style.display = 'flex'; // Ensure the container is visible
+  cardsContainer.style.display = 'flex';
 }
-
-// Display daily weather with a button for more info

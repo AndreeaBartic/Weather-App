@@ -21,6 +21,6 @@ export async function fetchCityImage(cityName) {
     }
   } catch (error) {
     console.error('Error fetching city image:', error);
-    return backgroundImage; // Fallback image in case of error
+    return backgroundImage;
   }
 }

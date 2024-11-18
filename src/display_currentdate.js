@@ -55,7 +55,6 @@ export function displayCurrentTime() {
     }
   }
 
-  // Initial call to set sunrise/sunset time and current date
   updateTimeAndDate();
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
@@ -85,9 +84,7 @@ export function displayCurrentTime() {
     });
   }
 
-  // Update time every second
   setInterval(updateTimeAndDate, 1000);
 }
 
-// Call the function initially to set the date, time, and weather data
 displayCurrentTime();

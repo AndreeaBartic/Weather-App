@@ -29,12 +29,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
           if (data && data.length > 0) {
             const cityName = data[0].name;
 
-            // Fetch current weather, background image, and five-day forecast
             fetchWeather(cityName);
             todayWeather(cityName);
             fetchWeatherData(cityName);
             fetchHourWeather(cityName);
-            // Fetch and display the five-day forecast
           } else {
             console.error('City not found.');
           }
@@ -48,10 +46,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
       console.error('Could not get location.');
     };
 
-    // Automatically fetch location on page load
     navigator.geolocation.getCurrentPosition(success, error);
 
-    // Fetch location again if location icon is clicked
     const locationIcon = document.querySelector('.search-bar_location-icon');
 
     locationIcon.addEventListener('click', e => {
@@ -124,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
               updateTimeForCity(cityName);
               updateTimeWithTimeZone(timezoneOffset);
-
-              // fetchWeatherData(cityName);
             })
             .catch(error => {
               console.error('Error fetching city image:', error);

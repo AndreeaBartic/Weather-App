@@ -14,14 +14,12 @@ export async function todayWeather(cityName) {
     }
     const data = await response.json();
 
-    // Filtrăm datele pentru a obține temperaturile din ziua curentă
     const today = new Date().toDateString();
     const todayTemps = data.list.filter(item => {
       const itemDate = new Date(item.dt * 1000).toDateString();
       return itemDate === today;
     });
 
-    // Calculăm min și max pentru temperaturile din ziua curentă
     const minTemp = Math.round(
       Math.min(...todayTemps.map(item => item.main.temp_min))
     );
@@ -47,22 +45,12 @@ export async function todayWeather(cityName) {
     iconToday.src = iconLink;
     iconToday.alt = data.list[0].weather[0].description;
     heroWeatherIcon.prepend(iconToday);
-
-    // Log pentru verificarea temperaturilor de azi
-    console.log(todayTemps); // Vezi toate intervalele de temperatură de azi
   } catch (error) {
     console.error('There was an error fetching the weather data:', error);
   }
 }
 
-// Event listeners for buttons
 todayBtn.addEventListener('click', e => {
-  // if (window.innerWidth > 1280) {
-
-  // } else {
-  //      document.querySelector('.buttons').style.marginRight = '0';
-  // }
-
   e.preventDefault();
   document.querySelector('.buttons').style.marginRight = '0';
   document.querySelector('.buttons').style.marginTop = '10px';

@@ -11,7 +11,6 @@ function updateForecast(data) {
 
   const dayMap = {};
 
-  // Group data by day, excluding the current day
   data.list.forEach(item => {
     const date = new Date(item.dt * 1000);
     const day = date.toDateString();
@@ -22,7 +21,7 @@ function updateForecast(data) {
     dayMap[day].push(item);
   });
 
-  const days = Object.keys(dayMap).slice(0, 5); // Limit to 5 days
+  const days = Object.keys(dayMap).slice(0, 5);
 
   days.forEach(day => {
     const forecastItem = document.createElement('div');
@@ -64,13 +63,13 @@ function updateForecast(data) {
                 <div class="temperature__data"> ${maxTemp}&deg;C</div></div>`;
     allInfo.appendChild(temperatureElement);
 
-    // Add "more info" button
     const moreButton = document.createElement('button');
     moreButton.classList.add('more-btn');
     moreButton.innerHTML = 'More Info';
     moreButton.addEventListener('click', function (e) {
       e.preventDefault();
-      displayHourlyWeather(dayMap[day]); // Pass hourly data for this day
+      displayHourlyWeather(dayMap[day]);
+      buttons.style.marginTop = '0';
     });
     allInfo.appendChild(moreButton);
 
@@ -101,8 +100,6 @@ const fiveDaysButton = document.querySelector('.five-days');
 const cancelButton = document.querySelector('.today-btn');
 const futureForecastSection = document.querySelector('.future-forecast');
 const todayEl = document.querySelector('.dateDisplay-container');
-// const moreInfo = document.querySelector('.more-btn');
-const daySection = document.querySelector('.days');
 const todayBtn = document.querySelector('.today-btn');
 const todaySection = document.querySelector('.today-weather');
 const buttons = document.querySelector('.buttons');
@@ -123,7 +120,6 @@ fiveDaysButton.addEventListener('click', e => {
   futureForecastSection.style.display = 'flex';
   futureForecastSection.style.backgroundColor = '#102136cc';
   todayEl.style.display = 'none';
-  // daySection.style.display = 'flex';
 });
 
 cancelButton.addEventListener('click', function () {
